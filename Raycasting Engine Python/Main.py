@@ -27,11 +27,12 @@ number_rays = 200
 run = True
 lookAt = []
 
-
+fps=30
+startFrameTime=0
 
 while run:
-    pg.time.delay(10)
-    
+    startFrameTime = pg.time.get_ticks()
+
     rendering_x = screen_Width/2
     
     for event in pg.event.get():
@@ -156,4 +157,6 @@ while run:
 
     pg.display.update() 
 
+    print((pg.time.get_ticks()-startFrameTime))
+    pg.time.delay((int(1000/fps))-(pg.time.get_ticks()-startFrameTime))
     
