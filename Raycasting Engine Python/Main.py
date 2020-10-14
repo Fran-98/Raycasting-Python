@@ -98,7 +98,7 @@ while run:
             i += 1
         #Verifica las distancias y pasa el par mas corto a la lista de intersecciones
         
-        now = ["lul",screen_Width]
+        now = ["lul",screen_Width,1]
         for pair in pairs:
             if pair[1] < now[1]:
                 now = pair
@@ -123,6 +123,7 @@ while run:
         wall_Height = screen_Height / p * 10
         if wall_Height > screen_Height:
                 wall_Height = screen_Height/2
+                
 
         b = 255 - 0.51 * p
         if b <0:

@@ -57,16 +57,16 @@ class Ray:
         #Calculo de distancia si estamos mirando al cuarto cuadrante (origen x,y jugador)
         d = 0
         #x2-x1 y y2-x1
-        if self.pot[0]> self.pos[0] and self.pot[1] > self.pos[1]:
+        if self.pot[0]>= self.pos[0] and self.pot[1] >= self.pos[1]:
             d = sqrt(pow(self.pot[0]-self.pos[0],2)+pow(self.pot[1]-self.pos[1],2))
         #tercer cuadrante
-        if self.pot[0]< self.pos[0] and self.pot[1] > self.pos[1]:
+        if self.pot[0]<= self.pos[0] and self.pot[1] >= self.pos[1]:
             d = sqrt(pow(self.pos[0]-self.pot[0],2)+pow(self.pot[1]-self.pos[1],2))
         #segundo cuadrante
-        if self.pot[0]< self.pos[0] and self.pot[1] < self.pos[1]:
+        if self.pot[0]<= self.pos[0] and self.pot[1] <= self.pos[1]:
             d = sqrt(pow(self.pos[0]-self.pot[0],2)+pow(self.pos[1]-self.pot[1],2))
         #primer cuadrante
-        if self.pot[0]> self.pos[0] and self.pot[1] < self.pos[1]:
+        if self.pot[0]>= self.pos[0] and self.pot[1] <= self.pos[1]:
             d = sqrt(pow(self.pot[0]-self.pos[0],2)+pow(self.pos[1]-self.pot[1],2))
                 
         return d
