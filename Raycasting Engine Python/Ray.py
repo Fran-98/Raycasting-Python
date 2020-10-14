@@ -3,11 +3,12 @@ from numpy import *
 
 class Ray:
 
-    def __init__(self,x,y,ang,ang_first_ray,fov):
+    def __init__(self,x,y,ang,phi,fov):
         self.pos = [x,y]
         self.dir = array([cos(deg2rad(ang)),sin(deg2rad(ang))])
-        self.cos = cos(deg2rad(abs(fov/2-(ang-ang_first_ray))))
-
+        self.cos = cos(deg2rad(absolute(fov/2-phi)))
+        self.pot = 0
+        
     def display(self, screen):
         pg.draw.line(screen,(0,0,255),self.pos,(self.pos+10 * self.dir),1)
 
@@ -49,5 +50,23 @@ class Ray:
         if t > 0 and t < 1 and u > 0:
             x = x1 + t * (x2 - x1)
             y = y1 + t * (y2 - y1)
-            pot = array([x,y])
-            return pot
+            self.pot = array([x,y])
+            return self.pot
+    
+    def distance (self):
+        #Calculo de distancia si estamos mirando al cuarto cuadrante (origen x,y jugador)
+        d = 0
+        #x2-x1 y y2-x1
+        if self.pot[0]> self.pos[0] and self.pot[1] > self.pos[1]:
+            d = sqrt(pow(self.pot[0]-self.pos[0],2)+pow(self.pot[1]-self.pos[1],2))
+        #tercer cuadrante
+        if self.pot[0]< self.pos[0] and self.pot[1] > self.pos[1]:
+            d = sqrt(pow(self.pos[0]-self.pot[0],2)+pow(self.pot[1]-self.pos[1],2))
+        #segundo cuadrante
+        if self.pot[0]< self.pos[0] and self.pot[1] < self.pos[1]:
+            d = sqrt(pow(self.pos[0]-self.pot[0],2)+pow(self.pos[1]-self.pot[1],2))
+        #primer cuadrante
+        if self.pot[0]> self.pos[0] and self.pot[1] < self.pos[1]:
+            d = sqrt(pow(self.pot[0]-self.pos[0],2)+pow(self.pos[1]-self.pot[1],2))
+                
+        return d

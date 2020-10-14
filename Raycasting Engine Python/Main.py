@@ -13,8 +13,6 @@ pg.display.set_caption("FranEngine")
 
 walls = [Wall.Wall(50,50,50,400),Wall.Wall(50,400,400,400),Wall.Wall(50,50,400,50),Wall.Wall(400,400,400,50)] 
 
-
-
 x = 250
 y = 250
 width = 20
@@ -64,10 +62,11 @@ while run:
 
 
     ang_ray = ang-ang//360 * 360
+    
     n = fov/number_rays
     for i in range(number_rays):
-        rays.append(Ray.Ray(x+(width/2),y+(height/2),ang_ray + n * i,ang_ray,fov)) 
-    
+        rays.append(Ray.Ray(x+(width/2),y+(height/2),ang_ray + n * i, n * i,fov)) 
+        
     #draw player
     pg.draw.rect(screen,(100,200,100),(x,y,width,height))
 
@@ -91,30 +90,16 @@ while run:
             dist = 0
             
             if type(ray.cast(wall)) is np.ndarray:
-                casted = ray.cast(wall)
                 
-                #Calculo de distancia si estamos mirando al cuarto cuadrante (origen x,y jugador)
-                #x2-x1 y y2-x1
-                if casted[0]> x and casted[1] > y:
-                    dist = sqrt(pow(casted[0]-x,2)+pow(casted[1]-y,2))
-                #tercer cuadrante
-                if casted[0]< x and casted[1] > y:
-                    dist = sqrt(pow(x-casted[0],2)+pow(casted[1]-y,2))
-                #segundo cuadrante
-                if casted[0]< x and casted[1] < y:
-                    dist = sqrt(pow(x-casted[0],2)+pow(y-casted[1],2))
-                #primer cuadrante
-                if casted[0]> x and casted[1] < y:
-                    dist = sqrt(pow(casted[0]-x,2)+pow(y-casted[1],2))
-                pairs[i] = [casted,dist,ray.cos]
+                pairs[i] = [ray.cast(wall),ray.distance(),ray.cos]
+
             else:
-                pairs[i] = ["lul",9999999,99999999]
+                pairs[i] = ["lul",screen_Width,"nope"]
             i += 1
         #Verifica las distancias y pasa el par mas corto a la lista de intersecciones
         
-        now = ["lul",9999999]
+        now = ["lul",screen_Width]
         for pair in pairs:
-            
             if pair[1] < now[1]:
                 now = pair
         if now[0] != "lul":
@@ -129,18 +114,23 @@ while run:
     width_of_ray = int((screen_Width/2)//number_rays)
     
     p = 0
+    
     for ray in good_rays:
         
         p = 0
         
-        p = abs(ray[1] * ray[2])
-        wall_Height = screen_Height / p * 100
-        
+        p = ray[1] * ray[2]
+        wall_Height = screen_Height / p * 10
+        if wall_Height > screen_Height:
+                wall_Height = screen_Height/2
+
+        b = 255 - 0.51 * p
+        if b <0:
+            b = 1
         for i in range(width_of_ray):
-            if wall_Height > screen_Height:
-                wall_Height=screen_Height-1
+            
             rendering_x += 1
-            pg.draw.line(screen,(255,0,0),(rendering_x,(screen_Height - wall_Height)/2),(rendering_x,screen_Height-(screen_Height - wall_Height)/2))
+            pg.draw.line(screen,(b,0,0),(rendering_x,(screen_Height - wall_Height)/2),(rendering_x,screen_Height-(screen_Height - wall_Height)/2))
                     
 
     for wall in walls:
@@ -157,6 +147,6 @@ while run:
 
     pg.display.update() 
 
-    print((pg.time.get_ticks()-startFrameTime))
+    #fps counter
+    #print((pg.time.get_ticks()-startFrameTime))
     pg.time.delay((int(1000/fps))-(pg.time.get_ticks()-startFrameTime))
-    
