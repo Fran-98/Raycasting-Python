@@ -3,6 +3,7 @@ import numpy as np
 from math import*
 import Ray
 import Wall
+import Raycast
 
 pg.init()
 screen_Width = 1200
@@ -23,7 +24,7 @@ ang = 0
 fov = 60
 number_rays = 200
 run = True
-lookAt = []
+
 
 fps=30
 startFrameTime=0
