@@ -70,7 +70,7 @@ class CastingRender:
             p = 0
             p = ray[1] * ray[2]
 
-            wall_Height = screen_Size[1] / p * 10
+            wall_Height = screen_Size[1] / p * 15
             if wall_Height > screen_Size[1]:
                 wall_Height = screen_Size[1]/2
                 
