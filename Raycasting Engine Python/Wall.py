@@ -8,3 +8,5 @@ class Wall:
         self.b = [x2,y2]
     def display(self,screen):
         pg.draw.line(screen,(255,0,0),self.a,self.b)
+    def hola():
+        print("Hola")
